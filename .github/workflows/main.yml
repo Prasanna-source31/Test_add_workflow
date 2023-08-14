@@ -27,7 +27,7 @@ jobs:
           GH_TOKEN: ${{secrets.TEST_TOKEN}}
         run: |
          ORGANIZATION="Prasanna-source31"
-         REPO_NAMES=$(curl -s -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/orgs/$ORGANIZATION/repos" | jq -r '.[] | .name')
+         REPO_NAMES=$(curl -s -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/orgs/$ORGANIZATION/repos" | grep -o '"name": "[^"]*' | grep -o '[^"]*$')
          echo "Repository names: $REPO_NAMES"
       - name: Add Workflow File to Repos
         env:
