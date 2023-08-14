@@ -21,7 +21,7 @@ def copy_file_to_repo(repo_name, token):
 
 def main():
     org_name = 'Prasanna-source31'
-    token = os.environ[${{ secrets.TEST_TOKEN }}]  # GitHub Personal Access Token
+    token = ${{ secrets.TEST_TOKEN }}  # GitHub Personal Access Token
 
     response = requests.get(f'https://api.github.com/orgs/{org_name}/repos', headers={'Authorization': f'Bearer {token}'})
     repos = response.json()
