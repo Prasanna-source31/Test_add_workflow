@@ -28,6 +28,7 @@ jobs:
         run: |
           ORGANIZATION="Prasanna-source31"
           REPO_NAMES=$(gh api /orgs/$ORGANIZATION/repos --jq '.[].name')
+          echo "Repository names: $REPO_NAMES"
 
       - name: Add Workflow File to Repos
         env:
