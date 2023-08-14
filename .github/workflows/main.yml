@@ -31,8 +31,8 @@ jobs:
           GH_TOKEN: ${{secrets.TEST_TOKEN}}
         run: |
           ORGANIZATION="Prasanna-source31"
-          REPO_NAMES=$(curl -s -H "Authorization: Bearer ${{ secrets.TEST_TOKEN }}" "https://api.github.com/orgs/$ORGANIZATION/repos")
-          python3 -c 'import json, os; print("\n".join([repo["name"] for repo in json.loads(os.environ["REPO_NAMES"])]))'
+          REPO_NAMES=$(curl -s -H "Authorization: Bearer ${{ secrets.TEST_TOKEN }}" "https://api.github.com/orgs/$ORGANIZATION/repos" | python3 -c "import sys, json; repos = json.load(sys.stdin); print('\n'.join([repo['name'] for repo in repos]))")
+          echo "Repository names: $REPO_NAMES"
           
           
       - name: Add Workflow File to Repos
