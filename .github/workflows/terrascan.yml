@@ -1,0 +1,49 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  terrascan_job_aws:
+    runs-on: ubuntu-latest
+    name: terrascan-action AWS Policies
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Run Terrascan with AWS Policies
+        id: terrascan_aws
+        uses: tenable/terrascan-action@main
+        with:
+          iac_type: 'terraform'
+          iac_version: 'v14'
+          policy_type: 'aws'
+          only_warn: true
+      - name: Save Terrascan Output (AWS) to File
+        run: echo "${{ steps.terrascan_aws.outputs.stdout }}" > terrascan_aws_output.json
+      - name: Upload Terrascan Output (AWS) as Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: terrascan_aws_output
+          path: terrascan_aws_output.json
+
+  terrascan_job_general:
+    runs-on: ubuntu-latest
+    name: terrascan-action General Policies
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Run Terrascan with General Policies
+        id: terrascan_general
+        uses: tenable/terrascan-action@main
+        with:
+          iac_type: 'terraform'
+          iac_version: 'v14'
+          policy_type: 'general'
+          only_warn: true
+      - name: Save Terrascan Output (General) to File
+        run: echo "${{ steps.terrascan_general.outputs.stdout }}" > terrascan_general_output.json
+      - name: Upload Terrascan Output (General) as Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: terrascan_general_output
+          path: terrascan_general_output.json
