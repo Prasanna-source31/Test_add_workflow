@@ -1,0 +1,25 @@
+name: Copy terrascan.yml to Repos
+
+on:
+  issues:
+   type:
+    -closed
+    -opened
+
+jobs:
+  automate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Copy terrascan.yml
+        run: python automate.py
+        env:
+          GH_TOKEN: ${{ secrets.TEST_TOKEN }}
