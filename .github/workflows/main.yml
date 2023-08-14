@@ -15,11 +15,12 @@ jobs:
     steps:
       - name: Install GitHub CLI
         run: |
-          # Install GitHub CLI (gh)
-          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
-          sudo apt-add-repository https://cli.github.com/packages
           sudo apt update
-          sudo apt install gh
+          sudo apt install -y software-properties-common
+          sudo add-apt-repository ppa:deadsnakes/ppa -y
+          sudo apt update
+          sudo apt install -y python3-pip
+          pip3 install gh
   
       - name: Retrieve Repository Names
         env:
