@@ -18,8 +18,13 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
+          
+      - name: Install Requests Library
+        run: pip install requests
+
+    
 
       - name: Copy terrascan.yml
         run: python .github/workflows/automate.py
         env:
-          GH_TOKEN: ${{ secrets.TEST_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TEST_TOKEN }}
