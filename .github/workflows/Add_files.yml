@@ -20,6 +20,6 @@ jobs:
           python-version: 3.8
 
       - name: Copy terrascan.yml
-        run: python automate.py
+        run: python .github/workflows/automate.py
         env:
           GH_TOKEN: ${{ secrets.TEST_TOKEN }}
