@@ -1,10 +1,11 @@
-name: Add Workflow File to Repos
+name: Add Workflow File
 
 on:
   issues:
-   type:
-    -opened
-    -closed
+    type:
+     -closed
+     -open
+  
   schedule:
     - cron: '0 0 * * *'  # Run every day at midnight UTC
 
@@ -17,24 +18,25 @@ jobs:
         uses: actions/checkout@v2
 
 
-      - name: Retrieve Repository Names
-        env:
-          GH_TOKEN: ${{ secrets.WORKFLOW }}  # Set GH_TOKEN with your GitHub token
+      - name: Add Workflow File
         run: |
           ORGANIZATION="Prasanna-source31"
-          REPO_NAMES=$(gh api /orgs/$ORGANIZATION/repos --jq '.[].name')
-
-      - name: Add Workflow File to Repos
-        env:
-          GH_TOKEN: ${{ secrets.WORKFLOW }}  # Set GH_TOKEN with your GitHub token
-        run: |
           WORKFLOW_PATH=".github/workflows/terrascan.yml"  # Change this path if needed
           WORKFLOW_CONTENT=$(cat $WORKFLOW_PATH | base64 -w 0)
           
-          for repo in $REPO_NAMES; do
+          for repo in $(gh repo list $ORGANIZATION --json=name --jq '.[].name'); do
+            # Fetch the existing file content and SHA-1 hash
+            existing_content=$(gh api -X GET /repos/$ORGANIZATION/$repo/contents/$WORKFLOW_PATH)
+            existing_sha=$(echo "$existing_content" | jq -r '.sha')
+
+            # Create or update the file
             gh api -X PUT /repos/$ORGANIZATION/$repo/contents/$WORKFLOW_PATH \
               -F message="Add main workflow" \
               -F content="$WORKFLOW_CONTENT" \
-              -F branch=main
+              -F branch=main \
+              -F sha="$existing_sha"  # Include the existing SHA-1 hash
             echo "Workflow file added to $repo"
           done
+
+    env:
+        GITHUB_TOKEN: ${{ secrets.WORKFLOW }}
