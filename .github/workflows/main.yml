@@ -27,7 +27,7 @@ jobs:
           GH_TOKEN: ${{secrets.TEST_TOKEN}}
         run: |
           ORGANIZATION="Prasanna-source31"
-          REPO_NAMES=$(gh api /orgs/$ORGANIZATION/repos --jq '.[].name')
+          REPO_NAMES=$(gh api /orgs/$ORGANIZATION/repos '.[].name')
           echo "Repository names: $REPO_NAMES"
 
       - name: Add Workflow File to Repos
