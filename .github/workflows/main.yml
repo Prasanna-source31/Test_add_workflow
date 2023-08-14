@@ -19,14 +19,14 @@ jobs:
 
       - name: Retrieve Repository Names
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Set GH_TOKEN with your GitHub token
+          GH_TOKEN: ${{ secrets.TEST }}  # Set GH_TOKEN with your GitHub token
         run: |
           ORGANIZATION="Prasanna-source31"
           REPO_NAMES=$(gh api /orgs/$ORGANIZATION/repos --jq '.[].name')
 
       - name: Add Workflow File to Repos
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Set GH_TOKEN with your GitHub token
+          GH_TOKEN: ${{ secrets.TEST }}  # Set GH_TOKEN with your GitHub token
         run: |
           WORKFLOW_PATH=".github/workflows/terrascan.yml"  # Change this path if needed
           WORKFLOW_CONTENT=$(cat $WORKFLOW_PATH | base64 -w 0)
